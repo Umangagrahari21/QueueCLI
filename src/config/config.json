@@ -1,0 +1,6 @@
+{
+    "maxRetries": 3,
+    "backoffBase": 2,
+    "pollInterval": 1000,
+    "workerTimeout": 30000
+}

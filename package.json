@@ -1,0 +1,33 @@
+{
+  "name": "queuectl",
+  "version": "1.0.0",
+  "description": "CLI-based background job queue system",
+  "type": "module",
+  "bin": {
+    "queuectl": "./src/cli/index.js"
+  },
+  "scripts": {
+    "start": "node src/cli/index.js",
+    "dev": "nodemon src/cli/index.js",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "queue",
+    "cli",
+    "sqlite",
+    "worker"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "commander": "^14.0.1",
+    "pino": "^10.0.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "eslint": "^9.34.0",
+    "nodemon": "^3.1.10"
+  }
+}
