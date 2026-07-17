@@ -1,19 +1,21 @@
 import { exec } from "child_process";
 
 import {
-    getNextJob,
+    claimNextJob,
     updateJobState,
     retryJob,
-    moveToDead,
+    moveToDead
 } from "../models/jobModel.js";
 
 export function processNextJob() {
 
-    const job = getNextJob();
+    // const job = getNextJob();
+    const workerId = `worker-${process.pid}`;
+    const job = claimNextJob(workerId);
 
     if (!job) return;
 
-    updateJobState(job.id, "processing");
+    // updateJobState(job.id, "processing");
 
     console.log(`Processing ${job.command}`);
 

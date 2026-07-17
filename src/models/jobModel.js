@@ -62,12 +62,43 @@ SET
 WHERE id = ?
 `);
 
+const updateWorkerStmt = db.prepare(`
+UPDATE jobs
+SET worker_id = ?
+WHERE id = ?
+`);
+
 export function createJob(job) {
     insertJobStmt.run(job);
 }
 
-export function getNextJob() {
-    return getNextJobStmt.get(new Date().toISOString());
+export function claimNextJob(workerId) {
+    const now = new Date().toISOString();
+
+    return db.transaction(() => {
+        const job = getNextJobStmt.get(now);
+
+        if (!job) {
+            return null;
+        }
+
+        updateStateStmt.run(
+            "processing",
+            now,
+            job.id
+        );
+
+        updateWorkerStmt.run(
+            workerId,
+            job.id
+        );
+
+        return {
+            ...job,
+            state: "processing",
+            worker_id: workerId,
+        };
+    })();
 }
 
 export function updateJobState(id, state) {
