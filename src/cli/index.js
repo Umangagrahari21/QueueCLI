@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
-import db from "../database/db.js";
 import "../database/init.js";
+
+import { Command } from "commander";
+import { registerEnqueueCommand } from "./commands/enqueue.js";
 
 const program = new Command();
 
@@ -17,5 +18,7 @@ program
   .action(() => {
     console.log("QueueCTL is working ✅");
   });
+
+registerEnqueueCommand(program);
 
 program.parse(process.argv);
