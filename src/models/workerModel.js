@@ -26,6 +26,17 @@ SET
 WHERE worker_id = ?
 `);
 
+const getAllWorkersStmt = db.prepare(`
+SELECT
+    worker_id,
+    pid,
+    status,
+    started_at,
+    last_heartbeat
+FROM workers
+ORDER BY started_at DESC
+`);
+
 export function registerWorker(workerId) {
 
     const now = new Date().toISOString();
@@ -54,4 +65,8 @@ export function deactivateWorker(workerId) {
 
     deactivateWorkerStmt.run(workerId);
 
+}
+
+export function getAllWorkers() {
+    return getAllWorkersStmt.all();
 }

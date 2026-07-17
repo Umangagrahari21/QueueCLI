@@ -36,6 +36,36 @@ ORDER BY created_at
 LIMIT 1
 `);
 
+const listJobsStmt = db.prepare(`
+SELECT
+    id,
+    command,
+    state,
+    attempts,
+    max_retries,
+    worker_id,
+    created_at,
+    updated_at
+FROM jobs
+ORDER BY created_at DESC
+`);
+
+const statsStmt = db.prepare(`
+SELECT
+    COUNT(*) AS total,
+    SUM(CASE WHEN state='pending' THEN 1 ELSE 0 END) AS pending,
+    SUM(CASE WHEN state='processing' THEN 1 ELSE 0 END) AS processing,
+    SUM(CASE WHEN state='completed' THEN 1 ELSE 0 END) AS completed,
+    SUM(CASE WHEN state='dead' THEN 1 ELSE 0 END) AS dead
+FROM jobs
+`);
+
+const getJobByIdStmt = db.prepare(`
+SELECT *
+FROM jobs
+WHERE id = ?
+`);
+
 const updateStateStmt = db.prepare(`
 UPDATE jobs
 SET state = ?, updated_at = ?
@@ -124,4 +154,13 @@ export function moveToDead(id, error) {
         new Date().toISOString(),
         id
     );
+}
+export function getAllJobs() {
+    return listJobsStmt.all();
+}
+export function getJobById(id) {
+    return getJobByIdStmt.get(id);
+}
+export function getJobStats() {
+    return statsStmt.get();
 }
