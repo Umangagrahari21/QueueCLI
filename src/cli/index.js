@@ -4,6 +4,7 @@ import "../database/init.js";
 
 import { Command } from "commander";
 import { registerEnqueueCommand } from "./commands/enqueue.js";
+import { registerWorkerCommand } from "./commands/worker.js";
 
 const program = new Command();
 
@@ -20,5 +21,6 @@ program
   });
 
 registerEnqueueCommand(program);
+registerWorkerCommand(program);
 
 program.parse(process.argv);
