@@ -2,6 +2,7 @@
 
 import { Command } from "commander";
 import db from "../database/db.js";
+import "../database/init.js";
 
 const program = new Command();
 
