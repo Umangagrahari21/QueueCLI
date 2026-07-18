@@ -10,6 +10,7 @@ import { registerListCommand } from "./commands/list.js";
 import { registerStatusCommand } from "./commands/status.js";
 import { registerStatsCommand } from "./commands/stats.js";
 import { registerWorkersCommand } from "./commands/workers.js";
+import { registerRetryCommand } from "./commands/retry.js";
 
 const program = new Command();
 
@@ -31,5 +32,6 @@ registerListCommand(program);
 registerStatusCommand(program);
 registerStatsCommand(program);
 registerWorkersCommand(program);
+registerRetryCommand(program);
 
 program.parse(process.argv);

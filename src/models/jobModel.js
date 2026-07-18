@@ -92,6 +92,18 @@ SET
 WHERE id = ?
 `);
 
+const requeueJobStmt = db.prepare(`
+UPDATE jobs
+SET
+    state = 'pending',
+    attempts = 0,
+    worker_id = NULL,
+    last_error = NULL,
+    available_at = ?,
+    updated_at = ?
+WHERE id = ?
+`);
+
 const updateWorkerStmt = db.prepare(`
 UPDATE jobs
 SET worker_id = ?
@@ -163,4 +175,14 @@ export function getJobById(id) {
 }
 export function getJobStats() {
     return statsStmt.get();
+}
+
+export function requeueJob(id) {
+    const now = new Date().toISOString();
+
+    return requeueJobStmt.run(
+        now,
+        now,
+        id
+    );
 }
